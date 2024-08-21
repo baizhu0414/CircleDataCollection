@@ -16,7 +16,7 @@ public class RotateAndCapture : Script
     private const float rotationStep = 15f; // 每次旋转的角度
     private const int totalRotation = 360; // 完整旋转一圈的角度
     // private const float distanceToTarget = 50f; // 视线到坐标点的距离
-    private readonly float[] distancesToTarget = { 10f, 15f, 10f }; // 定义与目标的不同距离
+    private readonly float[] distancesToTarget = { 10f, 15f, 50f }; // 定义与目标的不同距离
     private bool isCapturing = false; // 旋转和截图的标志
 
     public RotateAndCapture()

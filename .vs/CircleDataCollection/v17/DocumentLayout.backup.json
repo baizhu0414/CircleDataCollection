@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Project\\VS\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{0E73D01D-9E01-48B3-B796-9805F74CF2CC}|CircleDataCollection.csproj|e:\\project\\vs\\rotateandcapture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0E73D01D-9E01-48B3-B796-9805F74CF2CC}|CircleDataCollection.csproj|solutionrelative:rotateandcapture.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "RotateAndCapture.cs",
+              "DocumentMoniker": "E:\\Project\\VS\\RotateAndCapture.cs",
+              "RelativeDocumentMoniker": "RotateAndCapture.cs",
+              "ToolTip": "E:\\Project\\VS\\RotateAndCapture.cs",
+              "RelativeToolTip": "RotateAndCapture.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-20T11:10:50.762Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
