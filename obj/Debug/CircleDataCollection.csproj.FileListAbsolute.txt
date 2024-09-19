@@ -66,7 +66,6 @@ E:\Projects\CSProject\CircleDataCollection\bin\Debug\Microsoft.CodeDom.Providers
 E:\Projects\CSProject\CircleDataCollection\bin\Debug\ScriptHookVDotNet3.dll
 E:\Projects\CSProject\CircleDataCollection\bin\Debug\ScriptHookVDotNet3.xml
 E:\Projects\CSProject\CircleDataCollection\bin\Debug\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
-E:\Project\VS\bin\Debug\CircleDataCollection.dll.config
 E:\Project\VS\bin\Debug\CircleDataCollection.dll
 E:\Project\VS\bin\Debug\CircleDataCollection.pdb
 E:\Project\VS\bin\Debug\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
@@ -74,6 +73,7 @@ E:\Project\VS\bin\Debug\ScriptHookVDotNet3.xml
 E:\Project\VS\bin\Debug\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 E:\Project\VS\obj\Debug\CircleDataCollection.csproj.AssemblyReference.cache
 E:\Project\VS\obj\Debug\CircleDataCollection.csproj.CoreCompileInputs.cache
-E:\Project\VS\obj\Debug\CircleDa.171C8A38.Up2Date
 E:\Project\VS\obj\Debug\CircleDataCollection.dll
 E:\Project\VS\obj\Debug\CircleDataCollection.pdb
+E:\Project\VS\obj\Debug\CircleDataCollection.csproj.CopyComplete
+E:\Project\VS\bin\Debug\CircleDataCollection.dll.config

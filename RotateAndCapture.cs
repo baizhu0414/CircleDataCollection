@@ -34,6 +34,42 @@ public class RotateAndCapture : Script
                 isCapturing = true;
                 CaptureScreenshots();
             }
+        } else if (e.KeyCode == Keys.U)
+        {
+            GetCameraModelDistance();
+        }
+    }
+
+    private void GetCameraModelDistance()
+    {
+        Model targetModel = new Model(MODEL_NAME);
+
+        // 查找所有实体并过滤出与目标模型匹配的实体
+        List<Entity> entities = World.GetAllEntities().ToList();
+        var targetEntities = entities.Where(entity => entity.Model == targetModel).ToList();
+
+        if (targetEntities.Count > 0)
+        {
+            // 获取第一个找到的目标实体的位置
+            var targetEntity = targetEntities[0];
+            Vector3 targetPosition = targetEntity.Position;
+
+            // 获取当前相机（人物视角）的位置
+            Vector3 cameraPosition = GameplayCamera.Position;
+            if (World.RenderingCamera != null)
+            {
+                // 使用自定义渲染的相机
+                cameraPosition = World.RenderingCamera.Position;
+            }
+
+            // 计算距离
+            float distance = cameraPosition.DistanceTo(targetPosition);
+
+            GTA.UI.Notification.Show($"相机到模型的距离是: {distance:F2} 米");
+        } else
+        {
+            // 如果找不到目标模型，返回-1表示没有找到
+            GTA.UI.Notification.Show("找不到目标模型！");
         }
     }
 
