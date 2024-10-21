@@ -7,17 +7,25 @@ using System.IO;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.Linq;
+using GTA.Native;
 
 public class RotateAndCapture : Script
 {
     private readonly string MODEL_NAME = "truck2"; // 替换为你想要的模型名
     // private Vector3 targetPosition = new Vector3(1708.5f, 3741.0f, 33.5f); // 默认目标坐标
-    private readonly float[] elevationAngles = { 0f, 30f, 60f }; // 定义三个视角与水平线的夹角
-    private const float rotationStep = 15f; // 每次旋转的角度
+    private readonly float[] ELEVATION_ANGLES = { 0f, 30f, 60f }; // 定义三个视角与水平线的夹角
+    private const float rotationStep = 15f*3; // 每次旋转的角度
     private const int totalRotation = 360; // 完整旋转一圈的角度
     // private const float distanceToTarget = 50f; // 视线到坐标点的距离
-    private readonly float[] distancesToTarget = { 10f, 15f, 50f }; // 定义与目标的不同距离
+    private readonly float[] distancesToTarget = { 20f, 30f, 50f }; // 定义与目标的不同距离
     private bool isCapturing = false; // 旋转和截图的标志
+    private string[] WEATHER_TYPES = { "CLEAR", "BLIZZARD", "RAIN" }; // 定义天气轮换列表"CLEAR", "SMOG", "RAIN", "BLIZZARD", "RAIN"
+    private int[,] TIME_LIST = new int[3, 3]
+    {
+        {6, 0, 0},
+        {12, 0, 0},
+        {17, 0, 0}
+    };
 
     public RotateAndCapture()
     {
@@ -66,7 +74,8 @@ public class RotateAndCapture : Script
             float distance = cameraPosition.DistanceTo(targetPosition);
 
             GTA.UI.Notification.Show($"相机到模型的距离是: {distance:F2} 米");
-        } else
+        } 
+        else
         {
             // 如果找不到目标模型，返回-1表示没有找到
             GTA.UI.Notification.Show("找不到目标模型！");
@@ -88,25 +97,49 @@ public class RotateAndCapture : Script
         }
 
         Camera cam = World.CreateCamera(Vector3.Zero, Vector3.Zero, 50);
-        for (int i = 0; i < elevationAngles.Length; i++) // 切换不同相机仰角
+        for (int w=0; w<WEATHER_TYPES.Length; w++)
         {
-            float elevationAngle = elevationAngles[i];
-            float distanceToTarget = distancesToTarget[i];
-            for (float angle = 0; angle < totalRotation; angle += rotationStep) // 切换水平角度
+            SetWeather(WEATHER_TYPES[w]);
+            for(int t=0; t<TIME_LIST.GetLength(0); t++)
             {
-                Vector3 cameraPosition = CalculateCameraPosition(targetPos, elevationAngle, angle, distanceToTarget);
-                cam.Position = cameraPosition;
+                SetGameTime(TIME_LIST[t, 0], TIME_LIST[t, 1], TIME_LIST[t, 2]);
+                // 针对不同天气的不同时间段进行截图
+                for (int i = 0; i < ELEVATION_ANGLES.Length; i++) // 切换不同相机仰角
+                {
+                    float elevationAngle = ELEVATION_ANGLES[i];
+                    float distanceToTarget = distancesToTarget[i];
+                    for (float angle = 0; angle < totalRotation; angle += rotationStep) // 切换水平角度
+                    {
+                        Vector3 cameraPosition = CalculateCameraPosition(targetPos, elevationAngle, angle, distanceToTarget);
+                        cam.Position = cameraPosition;
 
-                cam.PointAt(targetPos); // 必须是旋转中心点的位置（不要用targetPosition，这个是默认值，且是全局变量）
+                        cam.PointAt(targetPos); // 必须是旋转中心点的位置（不要用targetPosition，这个是默认值，且是全局变量）
 
-                World.RenderingCamera = cam; // 在循环内重复赋值，确保渲染摄像机同步
-                Wait(100); // 等待一小段时间以确保截图质量
-                TakeScreenshot(angle, elevationAngle, distanceToTarget);
+                        World.RenderingCamera = cam; // 在循环内重复赋值，确保渲染摄像机同步
+                        Wait(100); // 等待一小段时间以确保截图质量
+                        TakeScreenshot(WEATHER_TYPES[w], TIME_LIST[t, 0], angle, elevationAngle, distanceToTarget);
+                    }
+                }
             }
         }
+        
         World.RenderingCamera = null; // 取消渲染相机关联
         cam.Delete(); // 销毁相机
         isCapturing = false;
+    }
+
+    // 调整游戏时间
+    private void SetGameTime(int hours, int minutes, int seconds)
+    {
+        Function.Call(Hash.SET_CLOCK_TIME, hours, minutes, seconds);
+    }
+    /**
+     * 设置天气
+     * @param weatherType:CLEAR,SMOG,RAIN,BLIZZARD,RAIN
+     */
+    private void SetWeather(string weatherType)
+    {
+        Function.Call(Hash.SET_WEATHER_TYPE_NOW, weatherType);
     }
 
     private Vector3 CalculateCameraPosition(Vector3 target, float elevationAngle, float azimuthAngle, float distance)
@@ -121,7 +154,7 @@ public class RotateAndCapture : Script
         return new Vector3(x, y, z);
     }
 
-    private void TakeScreenshot(float angle, float elevationAngle, float distance)
+    private void TakeScreenshot(string weather, int hour, float angle, float elevationAngle, float distance)
     {
         string directory = @"E:\GTAVScreenshots"; // 保存截图的路径
         if (!Directory.Exists(directory))
@@ -129,7 +162,7 @@ public class RotateAndCapture : Script
             Directory.CreateDirectory(directory);
         }
 
-        string filename = Path.Combine(directory, $"screenshot_elev{elevationAngle}_dist{distance}_azimuth{angle}.png");
+        string filename = Path.Combine(directory, $"{weather}_{hour}_elev{elevationAngle}_dist{distance}_azimuth{angle}.png");
         // 截图
         Bitmap screenshot = GTAVUtils.GetScreenshot();
         ImageInfo imageInfo = GetImageInfo(screenshot);
